@@ -73,6 +73,8 @@ class MessageManager:
         string = self.new_message_area.get(1.0, "end").strip('\n')
         if len(string) > 0:
             self.message_list.append(record.Record(string))
+            if self.subject_index != 0:
+                self.subjects_list[0].append(self.message_list[-1])
             self.new_message_area.delete(1.0, "end")
             self.reshow(self.subject_index)
             self.save()
@@ -91,3 +93,10 @@ class MessageManager:
 
     def new_subject(self, subject):
         self.subjects_list.append(subject)
+        self.save()
+
+    def del_subject(self, index):
+        self.subjects_list.pop(index)
+        self.save()
+        if self.subject_index == index:
+            self.reshow(0)

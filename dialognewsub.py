@@ -2,22 +2,6 @@ import tkinter
 from base_classes import *
 
 
-class OkButton(tkinter.Button):
-    def __init__(self, master=None, *args, **kwargs):
-        tkinter.Button.__init__(self, master, *args, **kwargs)
-        self["text"] = 'OK'
-        self["height"] = 2
-        self["width"] = 10
-
-
-class CancelButton(tkinter.Button):
-    def __init__(self, master=None, *args, **kwargs):
-        tkinter.Button.__init__(self, master, *args, **kwargs)
-        self["text"] = 'Cansel'
-        self["height"] = 2
-        self["width"] = 10
-
-
 class DialogOkNo:
     def __init__(self, master):
         self.sub_name = None

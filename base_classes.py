@@ -4,7 +4,7 @@ import tkinter
 class MyFrame(tkinter.Frame):
     def __init__(self, *args, **kwargs):
         tkinter.Frame.__init__(self, *args, **kwargs)
-        #self['relief'] = 'ridge'
+        self['relief'] = 'ridge'
         self['bd'] = 5
 
 
@@ -30,4 +30,24 @@ class Scroll(tkinter.Scrollbar):
         tkinter.Scrollbar.__init__(self, master, *args, **kwargs)
 
 
-class NewSubjectButton(tkinter.Button): pass
+class MenuButton(tkinter.Button):
+    def __init__(self, master=None, *args, **kwargs):
+        tkinter.Button.__init__(self, master, *args, **kwargs)
+        self["height"] = 1
+        self["bd"] = 0
+
+
+class OkButton(tkinter.Button):
+    def __init__(self, master=None, *args, **kwargs):
+        tkinter.Button.__init__(self, master, *args, **kwargs)
+        self["text"] = 'OK'
+        self["height"] = 2
+        self["width"] = 10
+
+
+class CancelButton(tkinter.Button):
+    def __init__(self, master=None, *args, **kwargs):
+        tkinter.Button.__init__(self, master, *args, **kwargs)
+        self["text"] = 'Cancel'
+        self["height"] = 2
+        self["width"] = 10

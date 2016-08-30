@@ -1,6 +1,7 @@
 import tkinter
 import record
 import dialognewsub
+import dialogfind
 from base_classes import *
 from message_manager import *
 
@@ -36,10 +37,12 @@ class Application(MyFrame):
             self.subjects_box.insert('end', subject.name)
         self.subjects_box.bind('<ButtonRelease-1>', self.new_subject_selected)
 
-
-        self.new_subject_button = NewSubjectButton(self.top_menu, text="new sub", height=1, bd=0,
-                                                   command=self.new_subject_add)
+        self.new_subject_button = MenuButton(self.top_menu, text="new sub..", command=self.new_subject_add)
         self.new_subject_button.pack(side='left', expand='no')
+        self.del_subject_button = MenuButton(self.top_menu, text="del sub", command=self.del_subject)
+        self.del_subject_button.pack(side='left', expand='no')
+        self.find_messages_button = MenuButton(self.top_menu, text="find..", command=self.search)
+        self.find_messages_button.pack(side='left', expand='no')
 
     def new_subject_selected(self, event):
         self.message_manager.reshow(self.subjects_box.curselection()[0])
@@ -50,10 +53,28 @@ class Application(MyFrame):
         self.message_manager.new_subject(record.Subject(name))
         self.subject_reshow()
 
+    def del_subject(self):
+        self.message_manager.del_subject(self.subjects_box.curselection()[0])
+        self.subject_reshow()
+
     def subject_reshow(self):
         self.subjects_box.delete(0, 'end')
         for subject in self.message_manager.subjects_list:
             self.subjects_box.insert('end', subject.name)
+
+    def search(self):
+        dialog = dialogfind.DialogFind(self.master)
+        return_value = dialog.go()
+        print(return_value)
+
+    def search_text(self):
+        pass
+
+    def search_tag(self):
+        pass
+
+    def search_date(self):
+        pass
 
 if __name__ == "__main__":
 
