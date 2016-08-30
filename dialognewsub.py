@@ -1,11 +1,12 @@
 import tkinter
+import tkinter.ttk
+
 from base_classes import *
 
 
 class DialogOkNo:
     def __init__(self, master):
         self.sub_name = None
-
         self.window = tkinter.Toplevel(master)
         self.window.title("New Subject")
         self.window.geometry("300x150+500+200")
@@ -30,6 +31,7 @@ class DialogOkNo:
         self.cancel_button = CancelButton(self.button_frame, command=self.cancel_command)
         self.cancel_button.pack(side='right', expand='no')
         self.window.protocol("WM_DELETE_WINDOW", self.cancel_command)
+
 
     def go(self):
         self.window.grab_set()

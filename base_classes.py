@@ -51,3 +51,13 @@ class CancelButton(tkinter.Button):
         self["text"] = 'Cancel'
         self["height"] = 2
         self["width"] = 10
+
+
+class SearchResult:
+    def __init__(self, type, example, date=None):
+        self.type = type
+        self.example = example
+        self.date = date
+
+    def __str__(self):
+        return str(self.type) + '\n' + str(self.example) + '\n' + str(self.date)

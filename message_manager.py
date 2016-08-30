@@ -68,6 +68,14 @@ class MessageManager:
             self.messages_area.insert("end", str(rec) + '\n')
         self.messages_area.config(state='disable')
 
+    def show(self, messages):
+        self.messages_area.config(state='normal')
+        self.messages_area.delete("1.0", "end")
+        for rec in messages:
+            self.messages_area.insert("end", str(rec) + '\n')
+        self.messages_area.config(state='disable')
+
+
     def add(self):
         """Метод add добавляет новое сообщение из поле ввода test_field при нажатии кнопки Commit"""
         string = self.new_message_area.get(1.0, "end").strip('\n')
@@ -82,10 +90,10 @@ class MessageManager:
     def load(self):
         with open(PATH, "rb") as database:
             self.subjects_list = pickle.load(database)
-        for subject in self.subjects_list:
-            print(subject.name)
-            for rec in subject:
-                print("%s: %s" % (rec.creating_time, rec.text))
+        #for subject in self.subjects_list:
+        #    print(subject.name)
+        #    for rec in subject:
+        #        print("%s: %s" % (rec.creating_time, rec.text))
 
     def save(self):
         with open(PATH, "wb") as database:

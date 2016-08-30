@@ -66,15 +66,42 @@ class Application(MyFrame):
         dialog = dialogfind.DialogFind(self.master)
         return_value = dialog.go()
         print(return_value)
+        if return_value:
+            Application.__dict__['search_' + return_value.type](self, return_value.example, return_value.date)
 
-    def search_text(self):
-        pass
+    def search_text(self, text, date=None):
+        result = []
+        for subject in self.message_manager.subjects_list:
+            for message in subject:
+                if text in message.text and Application.compare_dates(date, message.creating_time):
+                    result.append(message)
+        self.message_manager.show(result)
 
-    def search_tag(self):
-        pass
+    def search_tag(self, tag, date=None):
+        result = []
+        for subject in self.message_manager.subjects_list:
+            for message in subject:
+                if tag in message.text and Application.compare_dates(date, message.creating_time):
+                    result.append(message)
+        self.message_manager.show(result)
 
-    def search_date(self):
-        pass
+    def search_date(self, text, date):
+        result = []
+        for subject in self.message_manager.subjects_list:
+            for message in subject:
+                if Application.compare_dates(date, message.creating_time):
+                    result.append(message)
+        self.message_manager.show(result)
+
+
+    @staticmethod
+    def compare_dates(mydate, libdate):
+        if not mydate or not libdate:
+            return True
+        return (mydate['year'] == libdate.year and
+                    mydate['month'] == libdate.month and
+                    mydate['day'] == libdate.day)
+
 
 if __name__ == "__main__":
 
