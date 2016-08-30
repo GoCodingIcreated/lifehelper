@@ -72,3 +72,4 @@ class DialogFind:
     def cancel_command(self):
         self.return_value = None
         self.window.destroy()
+

@@ -40,20 +40,3 @@ $RECYCLE.BIN/
 .VolumeIcon.icns
 
 # Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-.idea/lifehelper.iml
-.idea/modules.xml
-.idea/misc.xml
-__pycache__/dialognewsub.cpython-35.pyc
-__pycache__/message_manager.cpython-35.pyc
-.idea/workspace.xml
-__pycache__/record.cpython-35.pyc
-__pycache__/base_classes.cpython-35.pyc
-*.pyc
-*.pyc
-__pycache__/base_classes.cpython-35.pyc
-__pycache__/base_classes.cpython-35.pyc
