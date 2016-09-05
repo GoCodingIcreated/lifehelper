@@ -4,7 +4,7 @@ import tkinter
 class MyFrame(tkinter.Frame):
     def __init__(self, *args, **kwargs):
         tkinter.Frame.__init__(self, *args, **kwargs)
-        self['relief'] = 'ridge'
+        #self['relief'] = 'ridge'
         self['bd'] = 5
 
 
@@ -61,3 +61,23 @@ class SearchResult:
 
     def __str__(self):
         return str(self.type) + '\n' + str(self.example) + '\n' + str(self.date)
+
+
+class MenuListButton(tkinter.Button):
+    def __init__(self, master=None, *args, **kwargs):
+        tkinter.Button.__init__(self, master, *args, **kwargs)
+        self["width"] = 4
+        self["height"] = 2
+
+
+class StateLabel(tkinter.Label):
+    def __init__(self, master=None, *args, **kwargs):
+        tkinter.Label.__init__(self, master, *args, **kwargs)
+        self["bg"] = 'white'
+        self.change_text(self["text"])
+        self['anchor'] = 'w'
+        self["width"] = 40
+        self['height'] = 2
+
+    def change_text(self, text):
+        self["text"] = "Current Subject:\t" + text

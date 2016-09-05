@@ -1,6 +1,7 @@
-from base_classes import *
-import record
 import pickle
+
+from base_classes import *
+from data import record
 
 PATH = "database" #файл, куда происходит запись и загрузка данных
 
@@ -57,6 +58,9 @@ class MessageManager:
         self.commit_button = CommitButton(self.commit_button_frame, command=self.add, height=2, width=10)
         self.commit_button.pack(side='right', expand='no')
 
+        self.state_label = StateLabel(self.commit_button_frame,
+                                      text=self.subjects_list[self.subject_index].name,)
+        self.state_label.pack(side='left', expand='no')
         self.reshow()
 
     def reshow(self, subject_index=0):
@@ -67,6 +71,7 @@ class MessageManager:
         for rec in self.message_list:
             self.messages_area.insert("end", str(rec) + '\n')
         self.messages_area.config(state='disable')
+        self.state_label.change_text(self.message_list.name)
 
     def show(self, messages):
         self.messages_area.config(state='normal')
@@ -74,6 +79,7 @@ class MessageManager:
         for rec in messages:
             self.messages_area.insert("end", str(rec) + '\n')
         self.messages_area.config(state='disable')
+        self.state_label.change_text("SearchResult")
 
 
     def add(self):

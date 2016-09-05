@@ -1,8 +1,5 @@
-import tkinter
-import record
-import dialognewsub
 import dialogfind
-from base_classes import *
+import dialognewsub
 from message_manager import *
 
 
@@ -12,6 +9,7 @@ class Application(MyFrame):
         self.master = master
         self.master.title("LifeHelper")
         self.master.geometry("640x640+300+0")
+        self.master.minsize(640, 640)
         self.pack(expand='yes', fill='both')
 
         self.top_menu = MyFrame(self, height=25)
@@ -25,6 +23,10 @@ class Application(MyFrame):
 
         self.list_frame = MyFrame(self.mid_frame, width=150)
         self.list_frame.pack(side='left', fill='both', expand='yes')
+
+        self.buttons_frame = MyFrame(self.mid_frame, width=50)
+        self.buttons_frame.pack(side='left', fill='both', expand='no')
+        self.create_frame_buttons(self.buttons_frame)
 
         self.text_frame = MyFrame(self.mid_frame, width=200)
         self.text_frame.pack(side='right', fill='both', expand='yes')
@@ -102,6 +104,15 @@ class Application(MyFrame):
                     mydate['month'] == libdate.month and
                     mydate['day'] == libdate.day)
 
+    def create_frame_buttons(self, frame):
+        self.button_list = []
+        for button_text, func in (("+", self.new_subject_add),
+                                  ("-", self.del_subject),
+                                  ("up", None),
+                                  ("down", None),
+                                  ("find", self.search)):
+            self.button_list.append(MenuListButton(frame, text=button_text, command=func))
+            self.button_list[-1].pack(side='top', expand='no', pady=5)
 
 if __name__ == "__main__":
 
