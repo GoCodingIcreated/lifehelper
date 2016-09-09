@@ -1,5 +1,6 @@
 import dialogfind
 import dialognewsub
+import data.datamanager as datamanager
 from message_manager import *
 
 
@@ -31,20 +32,14 @@ class Application(MyFrame):
         self.text_frame = MyFrame(self.mid_frame, width=200)
         self.text_frame.pack(side='right', fill='both', expand='yes')
 
+        # создание полей работы с сообщениями
         self.message_manager = MessageManager(self.text_frame)
 
-        self.subjects_box = SubjectsList(self.list_frame)
-        self.subjects_box.pack(side='top', fill='both', expand='yes')
-        for subject in self.message_manager.subjects_list:
-            self.subjects_box.insert('end', subject.name)
-        self.subjects_box.bind('<ButtonRelease-1>', self.new_subject_selected)
+        # создание панели выбора раздела
+        self.create_list_box(self.list_frame)
+        # создание верхнего меню
+        #self.create_menu(self.top_menu)
 
-        self.new_subject_button = MenuButton(self.top_menu, text="new sub..", command=self.new_subject_add)
-        self.new_subject_button.pack(side='left', expand='no')
-        self.del_subject_button = MenuButton(self.top_menu, text="del sub", command=self.del_subject)
-        self.del_subject_button.pack(side='left', expand='no')
-        self.find_messages_button = MenuButton(self.top_menu, text="find..", command=self.search)
-        self.find_messages_button.pack(side='left', expand='no')
 
     def new_subject_selected(self, event):
         self.message_manager.reshow(self.subjects_box.curselection()[0])
@@ -61,7 +56,7 @@ class Application(MyFrame):
 
     def subject_reshow(self):
         self.subjects_box.delete(0, 'end')
-        for subject in self.message_manager.subjects_list:
+        for subject in datamanager.datamanager.subjects_list:
             self.subjects_box.insert('end', subject.name)
 
     def search(self):
@@ -73,7 +68,7 @@ class Application(MyFrame):
 
     def search_text(self, text, date=None):
         result = []
-        for subject in self.message_manager.subjects_list:
+        for subject in datamanager.datamanager.subjects_list:
             for message in subject:
                 if text in message.text and Application.compare_dates(date, message.creating_time):
                     result.append(message)
@@ -81,7 +76,7 @@ class Application(MyFrame):
 
     def search_tag(self, tag, date=None):
         result = []
-        for subject in self.message_manager.subjects_list:
+        for subject in datamanager.datamanager.subjects_list:
             for message in subject:
                 if tag in message.text and Application.compare_dates(date, message.creating_time):
                     result.append(message)
@@ -89,7 +84,7 @@ class Application(MyFrame):
 
     def search_date(self, text, date):
         result = []
-        for subject in self.message_manager.subjects_list:
+        for subject in datamanager.datamanager.subjects_list:
             for message in subject:
                 if Application.compare_dates(date, message.creating_time):
                     result.append(message)
@@ -113,6 +108,21 @@ class Application(MyFrame):
                                   ("find", self.search)):
             self.button_list.append(MenuListButton(frame, text=button_text, command=func))
             self.button_list[-1].pack(side='top', expand='no', pady=5)
+
+    def create_list_box(self, frame):
+        self.subjects_box = SubjectsList(self.list_frame)
+        self.subjects_box.pack(side='top', fill='both', expand='yes')
+        for subject in datamanager.datamanager.subjects_list:
+            self.subjects_box.insert('end', subject.name)
+        self.subjects_box.bind('<ButtonRelease-1>', self.new_subject_selected)
+
+    def create_menu(self, frame):
+        self.new_subject_button = MenuButton(self.top_menu, text="new sub..", command=self.new_subject_add)
+        self.new_subject_button.pack(side='left', expand='no')
+        self.del_subject_button = MenuButton(self.top_menu, text="del sub", command=self.del_subject)
+        self.del_subject_button.pack(side='left', expand='no')
+        self.find_messages_button = MenuButton(self.top_menu, text="find..", command=self.search)
+        self.find_messages_button.pack(side='left', expand='no')
 
 if __name__ == "__main__":
 

@@ -1,1 +1,1 @@
-PATH = "database"
+PATH = "data/database"

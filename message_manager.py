@@ -1,4 +1,5 @@
 import pickle
+import data.datamanager as datamanager
 
 from base_classes import *
 from data import record
@@ -11,21 +12,9 @@ class MessageManager:
         В качестве параметра принимает Frame, на котором будет отображаться поле вывода, поле ввода и кнопка для
         отправки нового сообщения."""
     def __init__(self, window):
-        try:
-            self.load()
-        except FileNotFoundError:
-            # файла не существует -- значит это первый запуск. производим начальную инициализацию базы
-            self.subjects_list = []
-            self.subjects_list.append(record.Subject(name="all"))
-            self.subjects_list[0].append(record.Record("the first commit"))
-            self.subjects_list[0].append(record.Record("the second commit"))
-            self.subjects_list[0].append(record.Record("the last commit"))
-        try:
-            self.message_list = self.subjects_list[0]
-            self.subject_index = 0
-        except:
-            # TODO: add new subject creation
-            print("Error with self.message_list = self.subjects_list[0]")
+
+        self.subject_index = 0
+        self.message_list = datamanager.datamanager.get(self.subject_index)
 
         self.message_frame = MyFrame(window)
         self.message_frame.pack(side='top', fill='both', expand='yes')
@@ -59,15 +48,15 @@ class MessageManager:
         self.commit_button.pack(side='right', expand='no')
 
         self.state_label = StateLabel(self.commit_button_frame,
-                                      text=self.subjects_list[self.subject_index].name,)
+                                      text=self.message_list.name)
         self.state_label.pack(side='left', expand='no')
         self.reshow()
 
     def reshow(self, subject_index=0):
         self.messages_area.config(state='normal')
         self.messages_area.delete("1.0", "end")
-        self.message_list = self.subjects_list[subject_index]
         self.subject_index = subject_index
+        self.message_list = datamanager.datamanager.get(subject_index)
         for rec in self.message_list:
             self.messages_area.insert("end", str(rec) + '\n')
         self.messages_area.config(state='disable')
@@ -81,36 +70,23 @@ class MessageManager:
         self.messages_area.config(state='disable')
         self.state_label.change_text("SearchResult")
 
-
     def add(self):
         """Метод add добавляет новое сообщение из поле ввода test_field при нажатии кнопки Commit"""
         string = self.new_message_area.get(1.0, "end").strip('\n')
         if len(string) > 0:
             self.message_list.append(record.Record(string))
             if self.subject_index != 0:
-                self.subjects_list[0].append(self.message_list[-1])
+                datamanager.datamanager.get(0).append(self.message_list[-1])
             self.new_message_area.delete(1.0, "end")
             self.reshow(self.subject_index)
-            self.save()
-
-    def load(self):
-        with open(PATH, "rb") as database:
-            self.subjects_list = pickle.load(database)
-        #for subject in self.subjects_list:
-        #    print(subject.name)
-        #    for rec in subject:
-        #        print("%s: %s" % (rec.creating_time, rec.text))
-
-    def save(self):
-        with open(PATH, "wb") as database:
-            pickle.dump(self.subjects_list, database)
+            datamanager.datamanager.save()
 
     def new_subject(self, subject):
-        self.subjects_list.append(subject)
-        self.save()
+        datamanager.datamanager.add(subject)
+        datamanager.datamanager.save()
 
     def del_subject(self, index):
-        self.subjects_list.pop(index)
-        self.save()
+        datamanager.datamanager.erase(index)
+        datamanager.datamanager.save()
         if self.subject_index == index:
             self.reshow(0)

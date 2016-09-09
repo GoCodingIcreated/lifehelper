@@ -15,3 +15,11 @@ class Subject(list):
         list.__init__(self)
         self.name = name
 
+    def __repr__(self):
+        string = ['{']
+        for rec in self:
+            string.append('"' + str(rec) + '"')
+            string.append(', ')
+        string.pop()
+        string.append('}')
+        return ''.join(string)
